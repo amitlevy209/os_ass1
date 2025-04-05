@@ -10,6 +10,11 @@ uint64
 sys_exit(void)
 {
   int n;
+  struct proc *p = myproc();
+
+  if(argstr(1, p->exit_msg, sizeof(p->exit_msg)) < 0){
+      return -1;
+  }
   argint(0, &n);
   exit(n);
   return 0;  // not reached
@@ -88,4 +93,15 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+uint32
+sys_memsize(void)
+{
+  uint xsz;
+  struct proc *p = myproc();
+  acquire(&p->lock);
+  xsz = p->sz;
+  release(&p->lock);
+  return xsz;
 }

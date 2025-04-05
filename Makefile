@@ -106,6 +106,13 @@ $U/_forktest: $U/forktest.o $(ULIB)
 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $U/_forktest $U/forktest.o $U/ulib.o $U/usys.o
 	$(OBJDUMP) -S $U/_forktest > $U/forktest.asm
 
+# $U/_memsize_test: $U/memsize_test.o $(ULIB)
+# 	# memsize_test has less library code linked in - needs to be small
+# 	# in order to be able to max out the proc table.
+# 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $U/_memsize_test $U/memsize_test.o $U/ulib.o $U/usys.o
+# 	$(OBJDUMP) -S $U/_memsize_test > $U/memsize_test.asm
+
+
 mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 	gcc -Werror -Wall -I. -o mkfs/mkfs mkfs/mkfs.c
 
@@ -118,6 +125,7 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 UPROGS=\
 	$U/_cat\
 	$U/_echo\
+	$U/_helloworld\
 	$U/_forktest\
 	$U/_grep\
 	$U/_init\
@@ -132,6 +140,7 @@ UPROGS=\
 	$U/_grind\
 	$U/_wc\
 	$U/_zombie\
+	$U/_memsize_test\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
