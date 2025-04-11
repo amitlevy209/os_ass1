@@ -15,5 +15,5 @@ int main(int argc, char *argv[]) {
     write(1, msg, len);
     
     // Exit the program
-    exit(0);
+    exit(0,"");
 }

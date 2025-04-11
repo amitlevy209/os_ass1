@@ -6,17 +6,22 @@
 #include "spinlock.h"
 #include "proc.h"
 
+
+//added
 uint64
 sys_exit(void)
 {
   int n;
+  char msg[32];
   struct proc *p = myproc();
-
-  if(argstr(1, p->exit_msg, sizeof(p->exit_msg)) < 0){
-      return -1;
-  }
+  
   argint(0, &n);
-  exit(n);
+  //copy from user space to kernel space
+  if(argstr(1, msg, sizeof(p->exit_msg))< 0){
+    return -1;
+  }
+
+  exit(n, msg);
   return 0;  // not reached
 }
 
@@ -35,9 +40,11 @@ sys_fork(void)
 uint64
 sys_wait(void)
 {
-  uint64 p;
+  uint64 p, msg_p;
+
   argaddr(0, &p);
-  return wait(p);
+  argaddr(0, &msg_p);
+  return wait(p,(char*)msg_p);
 }
 
 uint64

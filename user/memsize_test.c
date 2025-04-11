@@ -19,7 +19,7 @@ memsize_test(void)
 
  if (ptr == 0){
     printf("allocated faied\n");
-    exit(0);
+    exit(0,"");
  }
 
  //after allocation 
@@ -38,5 +38,5 @@ int
 main(void)
 {
   memsize_test();
-  exit(0);
+  exit(0,"");
 }
